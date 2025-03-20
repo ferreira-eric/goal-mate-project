@@ -12,15 +12,17 @@ import SwiftData
 @Model
 class TaskModel {
     var name: String
-    var date: Date
-    var time: Date
+    var initialDate: Date
+    var finishDate: Date
+    var time: TimeInterval
     var isDone: Bool
     var goalModel: GoalModel? // Many for One
 
     
-    init(name: String, date: Date, time: Date, goalModel: GoalModel?, isDone: Bool = false) {
+    init(name: String, initialDate: Date, finishDate: Date, time: TimeInterval, goalModel: GoalModel?, isDone: Bool = false) {
         self.name = name
-        self.date = date
+        self.initialDate = initialDate
+        self.finishDate = finishDate
         self.time = time
         self.isDone = isDone
         self.goalModel = goalModel
