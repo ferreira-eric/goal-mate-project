@@ -16,7 +16,7 @@ class GoalModel {
     var initialDate: Date
     var finishDate: Date
     var isDone: Bool
-    @Relationship(deleteRule: .cascade) var tasks: [Task] = [] // One for many
+    @Relationship(deleteRule: .cascade) var tasks: [TaskModel] = [] // One for many
 
     
     init(name: String, initialDate: Date, finishDate: Date, isDone: Bool) {

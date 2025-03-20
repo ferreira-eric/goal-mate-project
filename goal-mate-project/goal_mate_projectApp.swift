@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
+import SwiftData
 
 @main
 struct goal_mate_projectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            GoalView()
         }
+        .modelContainer(for: [GoalModel.self])
+        .modelContainer(for: [TaskModel.self])
     }
 }
