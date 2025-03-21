@@ -41,7 +41,7 @@ struct GoalView: View {
                         ForEach(goals) { goal in
                             GoalRow(goal: goal)
                                 .listRowInsets(EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 8))
-                                .swipeActions {
+                                .swipeActions(allowsFullSwipe: false) {
                                     Button(role: .destructive) {
                                         deleteGoal(goal)
                                     } label: {
