@@ -11,8 +11,10 @@ import SwiftData
 struct GoalView: View {
     @Environment(\.modelContext) var modelContext
     @Query var goals: [GoalModel]
-    @State private var showAddGoal = false
-    
+
+    @State private var selectedGoal: GoalModel? = nil
+    @State private var showGoalForm = false
+
     var body: some View {
         NavigationView {
             VStack {
@@ -22,11 +24,11 @@ struct GoalView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 205, height: 205)
-                        
+                                            
                         Text("Comece adicionando uma meta!")
                             .font(.headline)
                             .padding(.top, 32)
-                        
+                                                
                         Text("Use o + para adicionar uma meta que você planeja alcançar.")
                             .font(.subheadline)
                             .foregroundColor(.gray)
@@ -45,9 +47,10 @@ struct GoalView: View {
                                     } label: {
                                         Label("Excluir", systemImage: "trash")
                                     }
-                                    
+
                                     Button {
-                                        editGoal(goal)
+                                        selectedGoal = goal
+                                        showGoalForm = true
                                     } label: {
                                         Label("Editar", systemImage: "pencil")
                                     }
@@ -56,27 +59,29 @@ struct GoalView: View {
                         }
                     }
                     .scrollContentBackground(.hidden)
+
                 }
             }
             .navigationTitle("Metas")
             .toolbar {
-                Button(action: { showAddGoal = true }) {
-                    Image(systemName: "plus.circle.fill")
-                        .foregroundColor(.orange)
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button(action: {
+                        selectedGoal = nil
+                        showGoalForm = true
+                    }) {
+                        Image(systemName: "plus")
+                            .foregroundColor(.orange)
+                    }
                 }
             }
-            .sheet(isPresented: $showAddGoal) {
-                AddGoalView()
+            .sheet(isPresented: $showGoalForm) {
+                GoalFormView(goal: selectedGoal)
             }
         }
     }
-    
+
     private func deleteGoal(_ goal: GoalModel) {
         modelContext.delete(goal)
-    }
-    
-    private func editGoal(_ goal: GoalModel) {
-        //EditGoalView(goal: goal)
     }
 }
 
