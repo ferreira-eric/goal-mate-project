@@ -14,7 +14,7 @@ struct GoalView: View {
     @State private var showAddGoal = false
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if goals.isEmpty {
                     VStack {
