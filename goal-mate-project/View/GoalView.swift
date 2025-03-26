@@ -37,9 +37,27 @@ struct GoalView: View {
                             .padding(.horizontal, 16)
                         Spacer().frame(height: 300)
                     }
+                } else if goals.filter({!$0.isDone}).isEmpty {
+                    VStack {
+                        Image("goalPlaceholder")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 205, height: 205)
+                                            
+                        Text("Adicionando mais uma meta!")
+                            .font(.headline)
+                            .padding(.top, 32)
+                                                
+                        Text("Use o + para adicionar uma meta que você planeja alcançar.")
+                            .font(.subheadline)
+                            .foregroundColor(.gray)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 16)
+                        Spacer().frame(height: 300)
+                    }
                 } else {
                     List {
-                        ForEach(goals) { goal in 
+                        ForEach(goals.filter{ !$0.isDone}) { goal in
                             GoalRow(goal: goal)
                                 .listRowInsets(EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 8))
                                 .swipeActions(allowsFullSwipe: false) {
@@ -58,7 +76,7 @@ struct GoalView: View {
                                 }
                                 .swipeActions(edge: .leading, allowsFullSwipe: false) {
                                     Button {
-                                        //TODO done
+                                        goal.isDone = true
                                     } label: {
                                         Label("Concluir", systemImage: "checkmark.circle.fill")
                                     }

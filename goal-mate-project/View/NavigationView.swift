@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct NavigationView: View {
+    
     init() {
            let appearance = UITabBarAppearance()
            appearance.configureWithOpaqueBackground()
@@ -31,7 +32,7 @@ struct NavigationView: View {
                }
 
                NavigationStack {
-                   Text("Tela de Progresso")
+                   ProgressAppView()
                }
                .tabItem {
                    Image(systemName: "chart.bar.fill")
