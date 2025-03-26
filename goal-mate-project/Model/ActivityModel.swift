@@ -8,3 +8,4 @@ struct ActivityModel: Identifiable {
     var endDate: String
     var timer: String
 }
+

@@ -1,14 +1,15 @@
 import SwiftUI
 
 struct CongratsView: View {
+    @AppStorage("points") private var points: Int = 0 // Persiste os pontos entre sessões
+
     var body: some View {
         VStack(spacing: 20) {
             // Imagem personalizada dos Assets
             Image("goalPlaceholder")
                 .resizable()
                 .scaledToFit()
-                .frame(width: 100, height: 100) // Tamanho configurável da imagem
-                .foregroundColor(.orange) // Cor será ignorada se for uma imagem completa (não símbolo)
+                .frame(width: 100, height: 100)
 
             // Texto de congratulação
             Text("Parabéns!")
@@ -26,7 +27,8 @@ struct CongratsView: View {
 
             // Botão para "Receber"
             Button(action: {
-                print("Pontos recebidos!")
+                points = PointsModel.addPoints(currentPoints: points) // Atualiza os pontos usando o modelo
+                print("Total de pontos: \(points)")
             }) {
                 Text("Receber")
                     .font(.headline)
@@ -38,6 +40,12 @@ struct CongratsView: View {
                     .cornerRadius(10)
             }
             .padding(.horizontal)
+
+            // Display dos pontos acumulados
+            Text("Total de pontos: \(points)")
+                .font(.title3)
+                .bold()
+                .foregroundColor(.green)
         }
         .padding()
         .background(Color.blue.opacity(0.1))
@@ -46,7 +54,7 @@ struct CongratsView: View {
     }
 }
 
-// Preview da tela de congratulações
+// Preview da tela
 struct CongratsView_Previews: PreviewProvider {
     static var previews: some View {
         CongratsView()
