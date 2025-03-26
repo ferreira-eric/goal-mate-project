@@ -14,6 +14,7 @@ struct TaskGoalView: View {
         
         @State private var showTaskForm = false
         @State private var selectedTask: TaskModel?
+        @State private var selectedTaskToView: TaskModel?
         
         @Query var tasks: [TaskModel]
         
@@ -22,7 +23,7 @@ struct TaskGoalView: View {
         var body: some View {
             NavigationStack {
                 VStack {
-                    if tasks.isEmpty {
+                    if tasks.filter({!$0.isDone}).isEmpty {
                         VStack {
                             Image("goal")
                                 .resizable()
@@ -41,20 +42,8 @@ struct TaskGoalView: View {
                             Spacer().frame(height: 300)
                         }
                     } else {
-                        /*ScrollView {
-                            VStack(spacing: 16) {
-                                ForEach(tasks) { task in
-                                    TaskRow(task: task)
-                                        .onTapGesture {
-                                            selectedTask = task
-                                            showTaskForm = true
-                                        }
-                                }
-                            }
-                            .padding()
-                        }*/
                         List {
-                            ForEach(tasks) { task in
+                            ForEach(tasks.filter { !$0.isDone }) { task in
                                 TaskRow(task: task)
                                     .listRowInsets(EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 8))
                                     .swipeActions(allowsFullSwipe: false) {
@@ -70,6 +59,8 @@ struct TaskGoalView: View {
                                             Label("Editar", systemImage: "pencil")
                                         }
                                         .tint(.blue)
+                                    }.onTapGesture {
+                                        selectedTaskToView = task
                                     }
                             }
                         }
@@ -91,13 +82,16 @@ struct TaskGoalView: View {
                 .sheet(isPresented: $showTaskForm) {
                     TaskFormView(taskToEdit: selectedTask, goal: goal)
                 }
+                .navigationDestination(item: $selectedTaskToView, destination: { task in
+                    TaskDetailView(task: task)
+                })
             }
         }
     
         private func deleteTask(_ task: TaskModel) {
             modelContext.delete(task)
         }
-    }
+}
 
 #Preview {
     TaskGoalView(goal: GoalModel(name: "nome da meta", initialDate: Date(), finishDate: Date(), isDone: false))

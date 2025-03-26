@@ -12,7 +12,7 @@ import SwiftData
 struct goal_mate_projectApp: App {
     var body: some Scene {
         WindowGroup {
-            NavigationView()
+            SplashScreenView()
         }
         .modelContainer(for: [GoalModel.self])
         .modelContainer(for: [TaskModel.self])

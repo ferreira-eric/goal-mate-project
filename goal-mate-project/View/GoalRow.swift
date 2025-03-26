@@ -34,7 +34,6 @@ struct GoalRow: View {
                 .progressViewStyle(LinearProgressViewStyle(tint: .orange))
         }
         .padding()
-        .background(Color.orange.opacity(0.1), in: .rect(cornerRadius: 10))
         .background(RoundedRectangle(cornerRadius: 10).stroke(Color.orange))
     }
     
