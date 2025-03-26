@@ -14,9 +14,10 @@ struct GoalView: View {
 
     @State private var selectedGoal: GoalModel? = nil
     @State private var showGoalForm = false
+    @State private var selectedGoalNavigation: GoalModel? = nil
 
     var body: some View {
-        NavigationView {
+        NavigationStack {
             VStack {
                 if goals.isEmpty {
                     VStack {
@@ -38,7 +39,7 @@ struct GoalView: View {
                     }
                 } else {
                     List {
-                        ForEach(goals) { goal in
+                        ForEach(goals) { goal in 
                             GoalRow(goal: goal)
                                 .listRowInsets(EdgeInsets(top: 1, leading: 1, bottom: 1, trailing: 8))
                                 .swipeActions(allowsFullSwipe: false) {
@@ -47,7 +48,6 @@ struct GoalView: View {
                                     } label: {
                                         Label("Excluir", systemImage: "trash")
                                     }
-
                                     Button {
                                         selectedGoal = goal
                                         showGoalForm = true
@@ -55,6 +55,17 @@ struct GoalView: View {
                                         Label("Editar", systemImage: "pencil")
                                     }
                                     .tint(.blue)
+                                }
+                                .swipeActions(edge: .leading, allowsFullSwipe: false) {
+                                    Button {
+                                        //TODO done
+                                    } label: {
+                                        Label("Concluir", systemImage: "checkmark.circle.fill")
+                                    }
+                                    .tint(.green)
+                                }
+                                .onTapGesture {
+                                    selectedGoalNavigation = goal
                                 }
                         }
                     }
@@ -69,7 +80,7 @@ struct GoalView: View {
                         selectedGoal = nil
                         showGoalForm = true
                     }) {
-                        Image(systemName: "plus")
+                        Image(systemName: "plus.circle.fill")
                             .foregroundColor(.orange)
                     }
                 }
@@ -77,6 +88,9 @@ struct GoalView: View {
             .sheet(isPresented: $showGoalForm) {
                 GoalFormView(goal: selectedGoal)
             }
+            .navigationDestination(item: $selectedGoalNavigation, destination: { goal in
+                TaskGoalView(goal: goal)
+            })
         }
     }
 
